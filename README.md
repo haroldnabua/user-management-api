@@ -1,2 +1,2 @@
-# group-project-repo
-Repository for group project in IntProg subject.
+#Group Project Rest API for User Management
+Repository for INTPROG Group Project
