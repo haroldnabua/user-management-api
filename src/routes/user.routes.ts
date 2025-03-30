@@ -76,7 +76,35 @@ router.delete('/:id', async (req: Request<{ id: string }>, res: Response, next: 
     }
 });
 
+router.put('/:id', async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
+    try {
+        const id = parseInt(req.params.id);
+        if (isNaN(id)) {
+            return res.status(400).json({ message: "Invalid user ID" });
+        }
 
+        const { firstname, lastname, middlename, email, password } = req.body;
 
+        const userToUpdate = await userRepository.findOneBy({ id });
+        if (!userToUpdate) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Update only provided fields
+        userToUpdate.firstname = firstname ?? userToUpdate.firstname;
+        userToUpdate.lastname = lastname ?? userToUpdate.lastname;
+        userToUpdate.middlename = middlename ?? userToUpdate.middlename;
+        userToUpdate.email = email ?? userToUpdate.email;
+
+        if (password) {
+            userToUpdate.password = await bcrypt.hash(password, 10); // Hash the updated password
+        }
+
+        await userRepository.save(userToUpdate);
+        res.status(200).json({ message: "User updated successfully", user: userToUpdate });
+    } catch (error) {
+        next(error);
+    }
+});
 
 export default router;

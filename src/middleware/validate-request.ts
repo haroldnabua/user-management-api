@@ -9,6 +9,13 @@ export const validateUserRequest = (req: Request, res: Response, next: NextFunct
         email: Joi.string().email().required(),
         password: Joi.string().min(6).required()
     });
+    const updateSchema = Joi.object({
+        firstname: Joi.string().optional(),
+        lastname: Joi.string().optional(),
+        email: Joi.string().email().optional(),
+        password: Joi.string().min(6).optional()
+    });
+    
 
     const options = {
         abortEarly: false,
