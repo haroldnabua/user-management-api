@@ -16,6 +16,7 @@ export const validateUserRequest = (req: Request, res: Response, next: NextFunct
         password: Joi.string().min(6).optional()
     });
     
+
     const options = {
         abortEarly: false,
         allowUnknown: true,
